@@ -15,6 +15,15 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
+#include "esp_camera.h"
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
+
+const char* ssid =  "A1-A82861";
+const char* password = "7PMGDV96J8";
+
+uint8_t x;
+
 
 // put function declarations here:
 int myFunction(int, int);
