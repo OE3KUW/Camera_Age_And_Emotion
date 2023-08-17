@@ -19,7 +19,6 @@
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
 
-int myFunction(int, int);  // wird das gebraucht ? 
 void getCommand(char c);
 
 const char* ssid =  "A1-A82861";
@@ -285,15 +284,19 @@ void ExecuteCommand()
 
 void setup() 
 {
-	int result = myFunction(2, 3); // ??? wo gehört das hin ??? 
 
-    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
   
     Serial.begin(115200);
-    Serial.setDebugOutput(true);
+//    Serial.setDebugOutput(true);
     Serial.println("start!");
-    delay(1000);
+
+
+
     Serial.println();
+
+
+    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+
 
     camera_config_t config;
     
@@ -525,8 +528,3 @@ void getCommand(char c)
 
 
 
-// wird dieser attached Interrupt gebraucht? 
-int myFunction(int x, int y) 
-{
-	return x + y;
-}
