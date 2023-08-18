@@ -286,9 +286,9 @@ void setup()
 {
 
   
-    Serial.begin(115200);
-//    Serial.setDebugOutput(true);
-    Serial.println("start!");
+    Serial.begin(115200, SERIAL_8N1);
+    Serial.setDebugOutput(true);
+    Serial.println("start!!!!!!");
 
 
 
@@ -370,6 +370,7 @@ void setup()
     }
     
     server.begin();   
+
 }
 
 
@@ -495,6 +496,8 @@ void loop()
         delay(1);
         client.stop();
     }
+
+
 }
 
 void getCommand(char c)
