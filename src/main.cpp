@@ -1,18 +1,11 @@
 /***************************************************************************************
 //
 //                c a m e r a   a g e   a n d   e m o t i o n       
-//                 a c c e s s   p o i n t
+//
+//                        a c c e s s   p o i n t
 //
 //                                                                      қuran jul 2023
 **************************************************************************************/
-/*********
-	Rui Santos
-	Complete instructions at https://RandomNerdTutorials.com/esp32-cam-projects-ebook/
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files.
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*********/
-
 
 #include <Arduino.h>
 #include <WiFi.h>
