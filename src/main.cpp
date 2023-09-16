@@ -1,17 +1,11 @@
 /***************************************************************************************
 //
 //                c a m e r a   a g e   a n d   e m o t i o n       
-//                 a c c e s s   p o i n t
+//                          a c c e s s   p o i n t
 //
-//                                                                      қuran jul 2023
-**************************************************************************************/
-/*********
-	Rui Santos
-	Complete instructions at https://RandomNerdTutorials.com/esp32-cam-projects-ebook/
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files.
-	The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*********/
+//                                                                      қuran aug 2023
+****************************************************************************************/
+
 
 
 #include <Arduino.h>
@@ -23,8 +17,16 @@
 
 void getCommand(char c);
 
-const char* ssid =  "A1-A82861";
-const char* password = "7PMGDV96J8";
+//const char* ssid =  "A1-A82861";
+//const char* password = "7PMGDV96J8";
+
+const char* ssid = "Cam32";
+const char* pw = "";                   // frei  ansonsten zB: "123456789";
+WiFiServer serverWiFi(80);
+IPAddress lclIP(192,168,2,219);
+IPAddress gateway(192,168,2,1);
+IPAddress subnet(255,255,255,0);
+
 
 String Feedback="";
 String Command="",cmd="",P1="",P2="",P3="",P4="",P5="",P6="",P7="",P8="",P9="";
@@ -55,19 +57,22 @@ WiFiServer server(80);
 static const char PROGMEM INDEX_HTML[] = R"rawliteral(
   <!DOCTYPE html>
   <head>
-  <title>ESP32-CAM Face Detection version: platformio</title>
+  <title>ESP32-CAM Face Trace: platformio</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https:\/\/code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https:\/\/cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.1/dist/face-api.min.js"></script>
   </head><body>
+  <h1>Trace</h1>
+  <h2> HTL St.P&ouml;lten</h2>
   <div id="container"></div>
   <img id="ShowImage" src="" style="display:none">
   <canvas id="canvas" style="display:none"></canvas>  
   <table>
   <tr>
-    <td colspan="2"><input type="button" id="getStill" value="Start Face Detection" style="display:none"></td> 
-    <td><input type="button" id="restart" value="Reset Board"></td> 
+    <td colspan="2">
+    <input type="button" id="restart" value="Reset"></td> 
+    <td><input type="button" id="getStill" value="Start Trace" style="display:none"></td> 
   </tr>
   <tr>
     <td>MirrorImage</td> 
@@ -290,7 +295,7 @@ void setup()
   
     Serial.begin(115200, SERIAL_8N1);
     Serial.setDebugOutput(true);
-    Serial.println("start!!!!!!");
+    Serial.println("start AccessPoint:  192.168.2.219 !");
 
 
 
@@ -351,12 +356,16 @@ void setup()
     sensor_t * s = esp_camera_sensor_get();
     s->set_framesize(s, FRAMESIZE_CIF);  //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA  設定初始化影像解析度
      
-    WiFi.mode(WIFI_AP_STA);
-    WiFi.begin(ssid, password);   
+    // WiFi.mode(WIFI_AP_STA);
+    WiFi.mode(WIFI_AP);  /*new*/
 
-    delay(1000);
+    //WiFi.begin(ssid, password);   
+    WiFi.softAPConfig(lclIP, gateway, subnet);
+    
+    delay(2000);
 
     long int StartTime=millis();
+    
     while (WiFi.status() != WL_CONNECTED) 
     {
         delay(500);
