@@ -15,6 +15,7 @@
 #include "esp_camera.h"
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
+//sept #include <SPIFFS.h>
 
 void getCommand(char c);
 
@@ -63,7 +64,9 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https:\/\/code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https:\/\/cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@0.22.1/dist/face-api.min.js"></script>
-  </head><body>
+  </head>
+  <body>
+  <img src="https:\/\/www.htlstp.ac.at/logo">
   <h1>Trace</h1>
   <h2> HTL St.P&ouml;lten</h2>
   <div id="container"></div>
@@ -227,7 +230,13 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
   </script>   
 )rawliteral";
 
-
+/* sept
+void initSPIFFS()
+{
+     if(SPIFFS.begin(true)) Serial.println("SPIFFS mounted succesfully"); 
+     else Serial.println("An error occured while mounting SPIFFS");
+}
+*/
 
 
 void ExecuteCommand() 
@@ -299,6 +308,7 @@ void setup()
     Serial.println("start AccessPoint:  192.168.2.219 !");
 
 
+  // sept   initSPIFFS();
 
     Serial.println();
 
@@ -356,12 +366,14 @@ void setup()
     //drop down frame size for higher initial frame rate
     sensor_t * s = esp_camera_sensor_get();
     s->set_framesize(s, FRAMESIZE_CIF);  //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA  設定初始化影像解析度
-     
+
+    WiFi.setHostname("HTLSTP"); 
     // WiFi.mode(WIFI_AP_STA);
     WiFi.mode(WIFI_AP);  /*new*/
 
     //WiFi.begin(ssid, password);   
     WiFi.softAPConfig(lclIP, gateway, subnet);
+    
     
     delay(2000);
 
@@ -380,6 +392,19 @@ void setup()
         Serial.print("ESP IP Address: http://");
         Serial.println(WiFi.localIP());  
     }
+
+// sept:
+/*
+    server.on("/logo", HTTP_GET, 
+    [](AsyncWebServerRequest *request)
+    {
+        request->send(SPIFFS, "/logo.png", "image/png");
+    }
+             );
+    
+    server.serveStatic("/", SPIFFS, "/");         
+
+*/
     
     server.begin();   
 
