@@ -19,11 +19,12 @@
 
 void getCommand(char c);
 
-//const char* ssid =  "A1-A82861";
-//const char* password = "7PMGDV96J8";
+const char* ssid =  "A1-A82861";
+const char* password = "7PMGDV96J8";
 
-const char* ssid = "Cam32";
-const char* pw = "";                   // frei  ansonsten zB: "123456789";
+//const char* ssid = "Cam32";
+//const char* pw = "";                   // frei  ansonsten zB: "123456789";
+
 WiFiServer serverWiFi(80);
 IPAddress lclIP(192,168,2,219);
 IPAddress gateway(192,168,2,1);
@@ -301,11 +302,13 @@ void ExecuteCommand()
 
 void setup() 
 {
-
+    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
   
     Serial.begin(115200, SERIAL_8N1);
     Serial.setDebugOutput(true);
-    Serial.println("start AccessPoint:  192.168.2.219 !");
+    delay(500);
+    Serial.println("start!");
+    //Serial.println("start AccessPoint:  192.168.2.219 !");
 
 
   // sept   initSPIFFS();
@@ -313,7 +316,7 @@ void setup()
     Serial.println();
 
 
-    WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0);
+    
 
 
     camera_config_t config;
@@ -367,12 +370,12 @@ void setup()
     sensor_t * s = esp_camera_sensor_get();
     s->set_framesize(s, FRAMESIZE_CIF);  //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA  設定初始化影像解析度
 
-    WiFi.setHostname("HTLSTP"); 
-    // WiFi.mode(WIFI_AP_STA);
-    WiFi.mode(WIFI_AP);  /*new*/
+    WiFi.mode(WIFI_AP_STA);
+    WiFi.begin(ssid, password);   
 
-    //WiFi.begin(ssid, password);   
-    WiFi.softAPConfig(lclIP, gateway, subnet);
+    //WiFi.setHostname("HTLSTP"); 
+    //WiFi.mode(WIFI_AP);  /*new*/
+    //WiFi.softAPConfig(lclIP, gateway, subnet);
     
     
     delay(2000);
