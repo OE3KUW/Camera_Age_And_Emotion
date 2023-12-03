@@ -12,9 +12,8 @@
 //
 //                        a c c e s s   p o i n t
 //
-//                                                                      қuran sept 2023
+//                                                                  қuran 6.dez 2023
 **************************************************************************************/
-// freigegeben für Neue Trends der EL :-)
 
 
 #include <Arduino.h>
@@ -23,16 +22,18 @@
 #include "esp_camera.h"
 #include "soc/soc.h"
 #include "soc/rtc_cntl_reg.h"
-//sept #include <SPIFFS.h>
 
 void getCommand(char c);
-#define AP_STA_VESION
-#ifdef AP_STA_VERSION 
-const char* ssid =  /***********/                                                                                       "A1-A82861";
-const char* password = /**********/                                                                                     "7PMGDV96J8";
+
+#define AP_VERSION
+
+
+#ifdef AP_VERSION 
+const char* ssid =  /***********/;
+const char* password = /**********/;
 #else
-//  const char* ssid = "Cam32";   
-//  const char* pw = "";                   // frei  ansonsten zB: "123456789";
+  const char* ssid = "Cam32";   
+  const char* pw = "";                   // frei  ansonsten zB: "123456789";
 #endif
 
 WiFiServer serverWiFi(80);
@@ -318,7 +319,7 @@ void setup()
     Serial.setDebugOutput(true);
     delay(500); // wait time, cause the server needs time for his preperations ...
 
-    Serial.println("start!");
+    Serial.println("start! xxx");
     
     
 
@@ -376,14 +377,14 @@ void setup()
     sensor_t * s = esp_camera_sensor_get();
     s->set_framesize(s, FRAMESIZE_CIF);  //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA  設定初始化影像解析度
 
-#ifdef AP_STA_VERSION    
+#ifdef AP_VERSION 
     WiFi.mode(WIFI_AP_STA);
     WiFi.begin(ssid, password);   
 #else
-//    WiFi.setHostname("HTLSTP"); 
-//    WiFi.mode(WIFI_AP);  /*new*/
-//    WiFi.softAPConfig(lclIP, gateway, subnet);
-//    Serial.println("start AccessPoint:  192.168.2.219 !");
+    WiFi.setHostname("HTLSTP"); 
+    WiFi.mode(WIFI_AP);  /*new*/
+    WiFi.softAPConfig(lclIP, gateway, subnet);
+    Serial.println("start AccessPoint:  192.168.2.219 !");
 #endif 
 
     delay(2000);  // server needs time to be prepared ....
@@ -404,7 +405,7 @@ void setup()
         Serial.println(WiFi.localIP());  
     }
 
-// sept:
+//  logo ...
 /*
     server.on("/logo", HTTP_GET, 
     [](AsyncWebServerRequest *request)
