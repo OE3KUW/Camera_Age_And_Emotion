@@ -1,4 +1,12 @@
-/***************************************************************************************
+/*********
+  Rui Santos
+  Complete instructions at https://RandomNerdTutorials.com/esp32-cam-projects-ebook/
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this
+  software and associated documentation files.
+  The above copyright notice and this permission notice shall be included in all copies
+  or substantial portions of the Software.
+*********//****************************************************************************
 //
 //                c a m e r a   a g e   a n d   e m o t i o n       
 //
@@ -18,12 +26,14 @@
 //sept #include <SPIFFS.h>
 
 void getCommand(char c);
-
-const char* ssid =  "A1-A82861";
-const char* password = "7PMGDV96J8";
-
-//const char* ssid = "Cam32";
-//const char* pw = "";                   // frei  ansonsten zB: "123456789";
+#define AP_STA_VESION
+#ifdef AP_STA_VERSION 
+const char* ssid =  /***********/                                                                                       "A1-A82861";
+const char* password = /**********/                                                                                     "7PMGDV96J8";
+#else
+//  const char* ssid = "Cam32";   
+//  const char* pw = "";                   // frei  ansonsten zB: "123456789";
+#endif
 
 WiFiServer serverWiFi(80);
 IPAddress lclIP(192,168,2,219);
@@ -306,18 +316,14 @@ void setup()
   
     Serial.begin(115200, SERIAL_8N1);
     Serial.setDebugOutput(true);
-    delay(500);
+    delay(500); // wait time, cause the server needs time for his preperations ...
+
     Serial.println("start!");
-    //Serial.println("start AccessPoint:  192.168.2.219 !");
-
-
-  // sept   initSPIFFS();
-
-    Serial.println();
-
-
+    
     
 
+    Serial.println();
+ 
 
     camera_config_t config;
     
@@ -370,15 +376,17 @@ void setup()
     sensor_t * s = esp_camera_sensor_get();
     s->set_framesize(s, FRAMESIZE_CIF);  //UXGA|SXGA|XGA|SVGA|VGA|CIF|QVGA|HQVGA|QQVGA  設定初始化影像解析度
 
+#ifdef AP_STA_VERSION    
     WiFi.mode(WIFI_AP_STA);
     WiFi.begin(ssid, password);   
+#else
+//    WiFi.setHostname("HTLSTP"); 
+//    WiFi.mode(WIFI_AP);  /*new*/
+//    WiFi.softAPConfig(lclIP, gateway, subnet);
+//    Serial.println("start AccessPoint:  192.168.2.219 !");
+#endif 
 
-    //WiFi.setHostname("HTLSTP"); 
-    //WiFi.mode(WIFI_AP);  /*new*/
-    //WiFi.softAPConfig(lclIP, gateway, subnet);
-    
-    
-    delay(2000);
+    delay(2000);  // server needs time to be prepared ....
 
     long int StartTime=millis();
     
